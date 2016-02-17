@@ -94,5 +94,12 @@ public class HomeController {
 
     }
 
+    @RequestMapping(value="/getNameList",method = RequestMethod.GET)
+    public @ResponseBody JSONObject getNameList(@RequestParam("departmentId") String departmentId)
+    {
+        List<Staff> staffs = staffService.getAll(departmentId);
+        return DataUtil.getData(staffs);
+    }
+
 
 }

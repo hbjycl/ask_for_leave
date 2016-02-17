@@ -56,7 +56,7 @@
 
         <div class="am-form-group">
             <label>部门：</label>
-            <select name="departmentId" data-am-selected="{btnWidth: '100%', btnSize: 'sm',maxHeight: 100,searchBox: 1}">
+            <select name="departmentId" data-am-selected="{btnWidth: '100%', btnSize: 'sm',maxHeight: 100,searchBox: 1}" onchange="changeNameList()">
             <c:forEach var="department" items="${departments }">
                 <option value="${department.departmentId }">${department.departmentName }</option>
             </c:forEach>
@@ -149,6 +149,14 @@
        }, "json")
 
    }
+
+    function  changeNameList(){
+        $.get("getNameList",$('#departmentId').val(),function(data)
+        {
+            $("#staffId").options[data.staffId].selected = true;  //保持选中状态
+
+        })
+    }
 
 </script>
 </body>
