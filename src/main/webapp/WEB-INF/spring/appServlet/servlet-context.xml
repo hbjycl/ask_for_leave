@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath:app.properties" ignore-unresolvable="true" />
+    <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+
+    <!-- Enables the Spring MVC @Controller programming model -->
+    <annotation-driven />
+    <!-- Handles HTTP GET requests for /resources/** by efficiently serving
+        up static resources in the ${webappRoot}/resources directory -->
+    <resources mapping="/resources/**" location="/resources/" />
+    <!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/company/**"
+        /> <mvc:mapping path="/subcompany/**" /> <mvc:mapping path="/customer/**"
+        /> <mvc:mapping path="/index/**" /> <beans:bean id="sessionInterceptor" class="cn.com.hzct.interceptor.AdminInterceptor"></beans:bean>
+        </mvc:interceptor> </mvc:interceptors> -->
+    <!-- Resolves views selected for rendering by @Controllers to .jsp resources
+        in the /WEB-INF/views directory -->
+    <beans:bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jsp" />
+    </beans:bean>
+    <beans:bean
+            class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <beans:property name="messageConverters">
+            <beans:list>
+                <beans:ref bean="jsonHttpMessageConverter" />
+                <!-- <beans:ref bean="xmlHttpMessageConverter" /> -->
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <!-- Json converter -->
+    <beans:bean id="jsonHttpMessageConverter"
+                class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <beans:property name="supportedMediaTypes">
+            <beans:list>
+                <beans:value>application/json;charset=UTF-8</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+    <context:component-scan base-package="cn.com.leave">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <!-- AOP式方法级权限检查 -->
+    <!-- <beans:bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+        depends-on="lifecycleBeanPostProcessor"> <beans:property name="proxyTargetClass"
+        value="true" /> </beans:bean> -->
+
+    <beans:bean
+            class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    </beans:bean>
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <beans:bean id="lifecycleBeanPostProcessor"
+                class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+    <!-- AOP式方法级权限检查 -->
+    <beans:bean
+            class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+            depends-on="lifecycleBeanPostProcessor">
+        <beans:property name="proxyTargetClass" value="true" />
+    </beans:bean>
+    <beans:bean
+            class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <beans:property name="securityManager" ref="securityManager" />
+    </beans:bean>
+    <beans:bean
+            class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+
+        <beans:property name="exceptionMappings">
+            <beans:props>
+                <beans:prop key="org.apache.shiro.authz.UnauthorizedException">/unauthorized</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+</beans:beans>
