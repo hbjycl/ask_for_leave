@@ -25,12 +25,13 @@ import cn.com.leave.entity.rowmapper.StaffRowMapper;
  * @date 2015年10月21日
  */
 @Repository
-public class CauseDao extends JdbcDaoSupport{
+public class CauseDao {
+	private JdbcTemplate jdbcTemplate;
 
 	public void add(String causeId, Staff staff,String context, Date createTime) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert INTO " + AppTables.TBL_CAUSE + " (cause_id,staff_id,department_id,context,create_time) VALUES (?,?,?,?,?)");
-		getJdbcTemplate().update(sql.toString(), new Object[] { causeId, staff.getStaffId(),staff.getDepartmentId(), context, createTime });
+		jdbcTemplate.update(sql.toString(), new Object[] { causeId, staff.getStaffId(),staff.getDepartmentId(), context, createTime });
 	}
 
 }
