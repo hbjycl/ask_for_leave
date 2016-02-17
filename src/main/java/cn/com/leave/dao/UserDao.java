@@ -7,11 +7,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
+
 /**
  * Created by chenlu on 2016/2/1.
  */
 @Repository
 public class UserDao{
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     public User login(String username,String password)

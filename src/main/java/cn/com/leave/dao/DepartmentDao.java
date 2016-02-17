@@ -28,6 +28,7 @@ import cn.com.leave.entity.rowmapper.StaffRowMapper;
  */
 @Repository
 public class DepartmentDao {
+	@Resource
 	JdbcTemplate jdbcTemplate;
 
     public List<Department> getAll() {

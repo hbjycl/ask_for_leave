@@ -26,6 +26,7 @@ import cn.com.leave.entity.rowmapper.StaffRowMapper;
  */
 @Repository
 public class CauseDao {
+	@Resource
 	private JdbcTemplate jdbcTemplate;
 
 	public void add(String causeId, Staff staff,String context, Date createTime) {
