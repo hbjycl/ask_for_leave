@@ -51,24 +51,27 @@
         </div>
     </div>
 </header>
-<form  id="form" class="am-form">
+<form id="form" class="am-form">
     <fieldset>
 
         <div class="am-form-group">
             <label>部门：</label>
-            <select name="departmentId" data-am-selected="{btnWidth: '100%', btnSize: 'sm',maxHeight: 100,searchBox: 1}" onchange="changeNameList()">
-            <c:forEach var="department" items="${departments }">
-                <option value="${department.departmentId }">${department.departmentName }</option>
-            </c:forEach>
-        </select>
+            <select name="departmentId" data-am-selected="{btnWidth: '100%', btnSize: 'sm',maxHeight: 100,searchBox: 1}"
+                    onchange="changeNameList()">
+                <option value="">-----请选择-----</option>
+                <c:forEach var="department" items="${departments }">
+                    <option value="${department.departmentId }">${department.departmentName }</option>
+                </c:forEach>
+            </select>
         </div>
         <div class="am-form-group">
             <label>姓名：</label>
             <select name="staffId" data-am-selected="{btnWidth: '100%', btnSize: 'sm',maxHeight: 100,searchBox: 1}">
-            <c:forEach var="staff" items="${staffs }">
-                <option value="${staff.staffId }">${staff.name }</option>
-            </c:forEach>
-        </select>
+                <option value="">-----请选择-----</option>
+                <c:forEach var="staff" items="${staffs }">
+                    <option value="${staff.staffId }">${staff.name }</option>
+                </c:forEach>
+            </select>
         </div>
 
         <div class="am-form-group">
@@ -77,7 +80,7 @@
         </div>
 
         <p>
-            <a onclick="addCause()" class="am-btn am-btn-primary am-btn-block" >
+            <a onclick="addCause()" class="am-btn am-btn-primary am-btn-block">
                 提交
             </a>
 
@@ -114,46 +117,45 @@
     </div>
 </div>
 <script>
-    $(function() {
-        $('#loginBtn').on('click', function() {
+    $(function () {
+        $('#loginBtn').on('click', function () {
             $('#login-prompt').modal({
                 relatedTarget: this,
-                onConfirm: function(e) {
-                    $.post("login",$('#loginForm').serialize(),function(result)
-                    {if (result.rc == 0) {
-                       $('#success-alert').modal();
-                    } else if (result.rc == 1) {
-                       alert(result.message);
-                    }
+                onConfirm: function (e) {
+                    $.post("login", $('#loginForm').serialize(), function (result) {
+                        if (result.rc == 0) {
+                            alert("登陆成功")
+                        } else if (result.rc == 1) {
+                            alert(result.message);
+                        }
                     })
                 },
-                onCancel: function(e) {
+                onCancel: function (e) {
                 }
             });
         });
     });
 
-   function addCause(){
-       if($("#context").val()==null || $("#context").val()=='')
-       {
-           alert("内容不能为空");
-           return;
-       }
-       $.post("addCause",$('#form').serialize(),function(result){
-           console.log("success");
-           if (result.rc == 0) {
-               $('#success-alert').modal();
-           } else if (result.rc == 1) {
-               alert("提交失败！");
-           }
-       }, "json")
+    function addCause() {
+        if ($("#context").val() == null || $("#context").val() == '') {
+            alert("内容不能为空");
+            return;
+        }
+        $.post("addCause", $('#form').serialize(), function (result) {
+            console.log("success");
+            if (result.rc == 0) {
+                $('#success-alert').modal();
+            } else if (result.rc == 1) {
+                alert("提交失败！");
+            }
+        }, "json")
 
-   }
+    }
 
-    function  changeNameList(){
-        $.get("getNameList",$('#departmentId').val(),function(data)
-        {
-            $("#staffId").options[data.staffId].selected = true;  //保持选中状态
+    function changeNameList() {
+        $.get("getNameList", $('#departmentId').val(), function (data) {
+
+            alert(data.staffId)
 
         })
     }

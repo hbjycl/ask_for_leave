@@ -84,7 +84,7 @@ public class HomeController {
         }catch (DataAccessException e)
         {
             e.printStackTrace();
-            return DataUtil.getError("数据库错误");
+            return DataUtil.getError("用户名或密码错误");
         }catch (Exception e) {
             e.printStackTrace();
             return DataUtil.getError("未知错误");

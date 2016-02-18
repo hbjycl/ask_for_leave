@@ -19,14 +19,14 @@ public class UserDao{
 
     public User login(String username,String password)
     {
-        String sql = "SELECT * FROM "+ AppTables.TBL_USER+" WHERE username = ?,password = ?";
+        String sql = "SELECT * FROM "+ AppTables.TBL_ADMIN+" WHERE username = ? AND password = ?";
         User user  = this.jdbcTemplate.queryForObject(sql,new Object[] {username,password},new UserRowMapper());
         return user;
     }
 
     public User getByUsername(String username)
     {
-        String sql = "SELECT * FROM "+ AppTables.TBL_USER + "WHERE username = ?";
+        String sql = "SELECT * FROM "+ AppTables.TBL_ADMIN + "WHERE username = ?";
         return this.jdbcTemplate.queryForObject(sql, new Object[]{username}, new UserRowMapper());
     }
 }
